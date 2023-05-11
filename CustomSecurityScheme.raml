@@ -1,0 +1,19 @@
+#%RAML 1.0 SecurityScheme
+type: x-token
+
+description: This is Custom Authentication Schema
+describedBy:
+  headers:
+    Authorization: 
+      type: string
+      required: true
+      description: This is Sample Token(think of RSA or any other)
+  responses:
+    401:
+      description: 401 - Unauthorized Access 
+   
+
+    
+  
+  
+    

@@ -1,0 +1,76 @@
+#%RAML 1.0
+title: American Flights API
+
+baseUri: http://{envHost}:{Port}
+
+baseUriParameters:
+  envHost:
+    type:
+    enum:
+      - dev
+      - test
+      - prod
+  Port:
+    type: integer
+    enum:
+      - 8081
+      - 8091
+
+
+types:
+  AmericanFlight : !include AmericanFlightDataType.raml
+
+securitySchemes:
+  x-token : !include /CustomSecurityScheme.raml
+
+securedBy:
+      - x-token
+
+/flights:
+  get:
+    securedBy:
+      - x-token
+    queryParameters:
+      destination:
+        required: false
+        enum:
+          - SFO
+          - CLE
+          - LAX
+    responses:
+      200:
+        body:
+          application/json:
+            type: AmericanFlight[]
+            example:
+              strict: true
+              value: !include AmericanFlightsExample.raml
+
+  post:
+    body:
+      application/json:
+        type: AmericanFlight
+        example:
+          strict: true
+          value: !include /examples/AmericanFlightNoIDExample.raml
+    responses:
+      201:
+        body:
+          application/json:
+            example:
+              message: "Flight Added but Not really"
+  
+  /{ID}:
+    get:
+      responses:
+        200:
+          body:
+            application/json:
+              type: AmericanFlight
+              example:
+                strict: true
+                value: !include /examples/AmericanFlightExample.raml
+              
+      
+
+    
